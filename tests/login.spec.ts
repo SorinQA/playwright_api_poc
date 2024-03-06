@@ -24,7 +24,5 @@ test.describe("Intect login module",()=>{
         expect(data[1].Name).toEqual('Fastansat');
         // Passing assertion:
         expect(data).toContainEqual(expect.objectContaining({"Id": 39451, "Name": "Fastansat"}));
-        // Failing assertion:
-        expect(data).toContainEqual(expect.objectContaining({"Id": 39451, "Name": "Fastansat_xxx"})); 
     })
 })

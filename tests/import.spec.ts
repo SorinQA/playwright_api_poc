@@ -21,11 +21,20 @@ test.describe("Intect import module",()=>{
             'Authorization': `Token ${token}`,
             },
             data: {
-                "AccountId":null,
-                "FileBase64":`${fileDataBase64}`,
-                "MappingId":9278,
-                "Options":[{"Key":"save","Value":"noerror"},{"Key":"Change","Value":"Upsert"}]
-            }
+                "AccountId": null,
+                "FileBase64": `${fileDataBase64}`,
+                "MappingId": 9336,
+                "Options": [
+                    {
+                        "Key": "save",
+                        "Value": "noerror"
+                    },
+                    {
+                        "Key": "Change",
+                        "Value": "Upsert"
+                    }
+                ]
+              }
         })
 
         const importResJSON = await importResponse.json();
