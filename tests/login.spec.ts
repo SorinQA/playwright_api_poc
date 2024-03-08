@@ -12,7 +12,6 @@ test.beforeAll(async ({ request }) => {
   
 test.describe("Intect login module",()=>{
     test('Get employment templates', async ({request}) => {   
-        console.log(token)
         const response = await request.get('/api/employmenttemplates/simple', {
             headers: {
                 'Accept': 'application/json',
