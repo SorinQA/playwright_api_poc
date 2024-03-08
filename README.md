@@ -4,7 +4,7 @@ npm install
 
 npx install playwright
 
-npm run test -> will run all tests n the /tests folder
+npm run test -> will run all tests in the /tests folder
 
 Run a specific test:
 
