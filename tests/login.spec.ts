@@ -18,10 +18,11 @@ test.describe("Intect login module",()=>{
                 'Authorization': `Token ${token}`
             }
         });
+        
         expect(response.ok()).toBeTruthy();
         const data = await response.json();
         expect(data[1].Name).toEqual('Fastansat');
         // Passing assertion:
-        expect(data).toContainEqual(expect.objectContaining({"Id": 39451, "Name": "Fastansat"}));
+        expect(data).toContainEqual(expect.objectContaining({"Id": 39708, "Name": "Fastansat"}));
     })
 })

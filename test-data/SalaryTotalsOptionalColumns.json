@@ -1,0 +1,22 @@
+[
+    {
+        "Key": "OptionalReportColumns",
+        "Value": null
+    },
+    {
+        "Key": "OptionalReportColumns",
+        "Value": []
+    },
+    {
+        "Key": "OptionalReportColumns",
+        "Value": "[\"SalaryType\"]"
+    },
+    {
+        "Key": "OptionalReportColumns",
+        "Value": "[\"Units\",\"AccountName\"]"
+    },
+    {
+        "Key": "OptionalReportColumns",
+        "Value": "[\"SecondaryExternalReference\",\"SalaryType\",\"Units\",\"AccountName\"]"
+    }
+]

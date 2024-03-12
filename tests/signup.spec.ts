@@ -49,7 +49,7 @@ test('Signup company on Intect', async ({playwright}) => {
       "AccountTypeId": 0
     }
   });
-  
+
   expect(signupResponse.ok()).toBeTruthy(); 
 
   // const signupData = await signupResponse.json();

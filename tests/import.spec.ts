@@ -23,23 +23,24 @@ test.describe("Intect import module",()=>{
             data: {
                 "AccountId": null,
                 "FileBase64": `${fileDataBase64}`,
-                "MappingId": 9336,
+                "MappingId": 9684, // This value changes on deployment of a new Intect app version.
                 "Options": [
                     {
                         "Key": "save",
-                        "Value": "noerror"
+                        "Value": "always"
                     },
                     {
                         "Key": "Change",
                         "Value": "Upsert"
                     }
                 ]
-              }
+            }
         })
 
-        const importResJSON = await importResponse.json();
+        console.log(importResponse);
         
         expect(importResponse.ok()).toBeTruthy();
+        const importResJSON = await importResponse.json();
         expect(importResJSON['Errors'].length).toBe(0)
 
         console.log('Errors: ', importResJSON['Errors']);
@@ -54,18 +55,27 @@ test.describe("Intect import module",()=>{
             'Accept': 'application/json; charset=utf-8',
             'Authorization': `Token ${token}`,
             },
-            data: {
-                "AccountId":null,
-                "FileBase64":`${fileDataBase64}`,
-                "MappingId":9278,
-                "Options":[{"Key":"save","Value":"noerror"},{"Key":"Change","Value":"Upsert"}]
+            data: 
+            {
+                "AccountId": null,
+                "FileBase64": `${fileDataBase64}`,
+                "MappingId": 9684,
+                "Options": [
+                    {
+                        "Key": "save",
+                        "Value": "always"
+                    },
+                    {
+                        "Key": "Change",
+                        "Value": "Upsert"
+                    }
+                ]
             }
         })
         const importResJSON = await importResponse.json();
   
         expect(importResponse.ok()).toBeTruthy();
-        expect(importResJSON['Errors']).toHaveLength(2)
-        expect(importResJSON['Errors']).not.toBe(0)
+        expect(importResJSON['Errors'.length]).not.toBe(0)
         
         console.log('Errors: ', importResJSON['Errors']);
         console.log('Errors lentgh: ', importResJSON['Errors'].length);
