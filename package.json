@@ -6,6 +6,7 @@
   "scripts": {
     "alltests": "npx playwright test",
     "expense": "npx playwright test expense.spec.ts",
+    "employeecreate": "npx playwright test createEmployee.spec.ts",
     "report": "npx playwright show-report"
   },
   "keywords": [],
@@ -13,6 +14,7 @@
   "license": "ISC",
   "devDependencies": {
     "@playwright/test": "^1.42.1",
-    "@types/node": "^20.11.24"
+    "@types/node": "^20.11.24",
+    "moment": "^2.30.1"
   }
 }
