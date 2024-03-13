@@ -34,10 +34,10 @@ test.afterEach(async ({ page }, testInfo) => {
 
 // This test is able to authenticate on the Expense/Travis server and get the OAuth Token
 // that can be used in further requests
-test("Get expense/Travis API access_token", async () => {
+test("Get expense/Travis API access_token", async ({ request, playwright }) => {
   const oauthResponse = await apiContext.post("/oauth/token?", {
     headers: {
-      Accept: "application/json; charset=utf-8",
+      Accept: "application/json;charset=utf-8",
     },
     params: {
       grant_type: "client_credentials",
@@ -45,7 +45,44 @@ test("Get expense/Travis API access_token", async () => {
         "public expense_reports.search expense_reports.confirm_export companies dimensions.view mileage_categories.read",
     },
   });
+
   expect(oauthResponse.ok()).toBeTruthy();
+
   const oauthData = await oauthResponse.json();
-  console.log('Expense auth access_token: ', oauthData.access_token)
+  const expenseToken = oauthData.access_token;
+  const token_type = oauthData.token_type;
+
+  const expenseResponse = await request.post(
+    // TODO: Expense company ID will have to be made generic:
+    // `https://api.staging.travis.no/companies/${expenseCompanyId}/generate_test_expenses`
+    "https://api.staging.travis.no/companies/F4B80999-458D-40CB-A423-BC9E13284145/generate_test_expenses",
+    {
+      headers: {
+        Accept: "application/json",
+        Authorization: `${token_type} ${expenseToken}`,
+      },
+      params: {
+        reports_per_employee: 2,
+        expenses_per_report: 5,
+        report_status: "approved",
+      },
+      data: {},
+    }
+  );
+
+  expect(expenseResponse.ok()).toBeTruthy();
+
+  const expenseData = await expenseResponse.json();
+  console.log("Expense data: ", expenseData);
+
+  // TODO: for later:
+  // const deleteResponse = await apiContext.delete('/companies/F4B80999-458D-40CB-A423-BC9E13284145',
+  // {
+  //   headers: {
+  //     'Content-Type': 'charset=',
+  //     Accept: "application/json;",
+  //     Authorization: `${token_type} ${expenseToken}`,
+  //   },
+  // });
+  // console.log(deleteResponse)
 });
