@@ -23,7 +23,7 @@ export default defineConfig({
   reporter: [['list'], ['html', {open: 'never'}]],
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: 'https://api.testintect.app/',
+    baseURL: `https://${process.env.ENV}.testintect.app/`,
     extraHTTPHeaders: {
       'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
       'Authorization': `Basic ${btoa("svd@intect.io:Sorintest9!")}`
