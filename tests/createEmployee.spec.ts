@@ -13,21 +13,7 @@ test.beforeAll(async ({ request }) => {
   const data = await response.json();
   token = data.Token;
   companyId = data.CurrentCompany.Id;
-  expect(data.Token).toBeTruthy();
-});
 
-test.afterEach(async ({ page }, testInfo) => {
-  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
-
-  if (testInfo.status !== testInfo.expectedStatus)
-    console.log(`Did not run as expected, ended up at ${page.url()}`);
-});
-
-test("Create employee on company", async ({ request }) => {
-  let randomNo = randomGenerator(10);
-  let nonStandardCPR = nonStandardCprGenerator();
-
-  // TODO: find a more generic way to get this:
   const employmentTemplatesResponse = await request.get(
     "/api/employmenttemplates",
     {
@@ -39,6 +25,18 @@ test("Create employee on company", async ({ request }) => {
   );
   const employmentTemplateData = await employmentTemplatesResponse.json();
   employmentTemplateId = employmentTemplateData[2].Id;
+});
+
+test.afterEach(async ({ page }, testInfo) => {
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
+
+  if (testInfo.status !== testInfo.expectedStatus)
+    console.log(`Did not run as expected, ended up at ${page.url()}`);
+});
+
+test("Create employee on company", async ({ request }) => {
+  let randomNumber = randomGenerator(10);
+  let nonStandardCPR = nonStandardCprGenerator();
 
   const createEmployeeResponse = await request.post(`/api/companyusers`, {
     headers: {
@@ -53,9 +51,9 @@ test("Create employee on company", async ({ request }) => {
         CompanyId: `${companyId}`,
         IsActive: true,
         RoleId: 20,
-        FirstName: `Test+${randomNo}`,
-        LastName: `QA+${randomNo}}`,
-        CompanyEmail: `test+${randomNo}@gmail.com`,
+        FirstName: `Test+${randomNumber}`,
+        LastName: `QA+${randomNumber}}`,
+        CompanyEmail: `test+${randomNumber}@gmail.com`,
       },
       Title: "Medarbejder",
       HireDate: "2024-03-12T00:00:00.000Z",
@@ -66,8 +64,12 @@ test("Create employee on company", async ({ request }) => {
       IdentityNumber: `${nonStandardCPR}`,
     },
   });
-
+  console.log("RESPONSE: ", createEmployeeResponse);
   expect(createEmployeeResponse.ok()).toBeTruthy();
   const createdEmployeeData = await createEmployeeResponse.json();
+  console.log("EMPLOYEE DATA: ", createdEmployeeData);
   // TODO: add assertions
+  expect(createdEmployeeData.Employment.VacationType.Name).toBe(
+    "Earns vacation compensation"
+  );
 });
