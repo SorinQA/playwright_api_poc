@@ -26,10 +26,10 @@ test.afterAll(async ({}) => {
 });
 
 test.afterEach(async ({ page }, testInfo) => {
-  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}.`);
 
   if (testInfo.status !== testInfo.expectedStatus)
-    console.log(`Did not run as expected, ended up at ${page.url()}`);
+    console.log(`Did not run as expected.`);
 });
 
 // This test is able to authenticate on the Expense/Travis server and get the OAuth Token
@@ -70,10 +70,10 @@ test("Get expense/Travis API access_token", async ({ request, playwright }) => {
     }
   );
 
+  console.log("EXPENSE RESPONSE: ", expenseResponse);
   expect(expenseResponse.ok()).toBeTruthy();
-
   const expenseData = await expenseResponse.json();
-  console.log("Expense data: ", expenseData);
+  console.log("EXPENSE DATA: ", expenseData);
 
   // TODO: for later:
   // const deleteResponse = await apiContext.delete('/companies/F4B80999-458D-40CB-A423-BC9E13284145',
