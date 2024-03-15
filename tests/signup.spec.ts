@@ -18,10 +18,10 @@ test.afterAll(async ({}) => {
 });
 
 test.afterEach(async ({ page }, testInfo) => {
-  console.log(`Finished ${testInfo.title} with status ${testInfo.status}`);
+  console.log(`Finished ${testInfo.title} with status ${testInfo.status}.`);
 
   if (testInfo.status !== testInfo.expectedStatus)
-    console.log(`Did not run as expected, ended up at ${page.url()}`);
+    console.log(`Did not run as expected.`);
 });
 
 test("Signup company on Intect", async () => {
@@ -47,9 +47,9 @@ test("Signup company on Intect", async () => {
       AccountTypeId: 0,
     },
   });
-
+  console.log("SIGNUP RESPONSE: ", signupResponse);
   expect(signupResponse.ok()).toBeTruthy();
   const signupData = await signupResponse.json();
-  console.log(signupData);
+  console.log("SIGNUP DATA: ", signupData);
   // TODO: add assertions
 });
