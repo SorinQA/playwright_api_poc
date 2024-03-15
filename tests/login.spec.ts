@@ -1,30 +1,38 @@
 import { test, expect } from "@playwright/test";
 
-let token;
-
-test.beforeAll(async ({ request }) => {
-  const response = await request.post("/api/auth/login");
-  expect(response.ok()).toBeTruthy();
-  const data = await response.json();
-  token = data.Token;
-  expect(data.Token).toBeTruthy();
-});
-
 test.describe("Intect login module", () => {
-  test("Get employment templates", async ({ request }) => {
-    const response = await request.get("/api/employmenttemplates/simple", {
-      headers: {
-        Accept: "application/json",
-        Authorization: `Token ${token}`,
-      },
-    });
+  test("Login with valid credentials", async ({ request }) => {
+    const loginResponse = await request.post(
+      "https://api.testintect.app//api/auth/login",
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          Authorization: `Basic ${btoa("svd@intect.io:Sorintest9!")}`,
+        },
+      }
+    );
+    console.log("Valid login response: ", loginResponse);
+    expect(loginResponse.ok()).toBeTruthy();
+    const loginData = await loginResponse.json();
+    console.log("Login data: ", loginData);
+    expect(loginData.CurrentCompany.Id).toEqual(6388);
+    expect(loginData.CurrentCompany.Name).toEqual("SorinTestCompany");
+    expect(loginData.CurrentCompany.Email1).toEqual("svd@intect.io");
+  });
 
-    expect(response.ok()).toBeTruthy();
-    const data = await response.json();
-    expect(data[1].Name).toEqual("Fastansat");
-    // TODO: figure out the changing Id of the employment templates
-    // expect(data).toContainEqual(
-    //   expect.objectContaining({ Id: 39708, Name: "Fastansat" })
-    // );
+  test("Login with invalid credentials", async ({ request }) => {
+    const loginResponse = await request.post(
+      "https://api.testintect.app//api/auth/login",
+      {
+        headers: {
+          "User-Agent":
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+          Authorization: `Basic ${btoa("svd@intect.io:Sorintest")}`,
+        },
+      }
+    );
+    console.log("Invalid login response: ", loginResponse);
+    expect(loginResponse.ok()).not.toBeTruthy();
   });
 });
