@@ -2,6 +2,7 @@ import { test, expect } from "@playwright/test";
 
 let token;
 let requestResponse;
+let requestResponseData;
 
 const optionalColumns = require("../test-data/SalaryTotalsOptionalColumns.json");
 
@@ -13,23 +14,21 @@ test.beforeAll(async ({ request }) => {
   expect(data.Token).toBeTruthy();
 });
 
-test.afterAll(async ({ }) => {
-  console.log(requestResponse)
+test.afterEach(async ({}) => {
+  console.log("RESPONSE: ", requestResponse);
+  console.log("RESPONSE DATA: ", requestResponseData);
 });
-
-
 
 for (const column of optionalColumns) {
   test(`Check Salary totals with param ${column["Value"]}`, async ({
     request,
   }) => {
-    let myData = {
+    let payload = {
       ReportId: 1,
       ParameterValues: [
         {
           Key: "SalaryBatchIdWithoutSalaryStatements",
           Value: 201858,
-          // Value: 191731,
         },
         {
           Key: "SalaryTotalsGroup",
@@ -43,17 +42,15 @@ for (const column of optionalColumns) {
       ],
     };
 
-    const response = await request.post("/api/reports/html", {
+    requestResponse = await request.post("/api/reports/html", {
       headers: {
         Accept: "application/json",
         Authorization: `Token ${token}`,
       },
-      data: myData,
+      data: payload,
     });
-    
-    requestResponse = response;
 
-    expect(response.ok()).toBeTruthy();
-    const data = await response.json();
+    expect(requestResponse.ok()).toBeTruthy();
+    requestResponseData = await requestResponse.json();
   });
 }
