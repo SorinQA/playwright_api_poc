@@ -2,13 +2,24 @@ import { test, expect } from '@playwright/test';
 const fs = require('fs')
 
 let token;
+let importMappingId;
 
 test.beforeAll(async ({ request }) => {
     const response = await request.post('/api/auth/login');
-        expect(response.ok()).toBeTruthy(); 
-        const data = await response.json();
-        token = data.Token;
-        expect(data.Token).toBeTruthy();
+    
+    expect(response.ok()).toBeTruthy(); 
+    const data = await response.json();
+    token = data.Token;
+    expect(data.Token).toBeTruthy();
+
+    const getMappingIds = await request.get('api/importmapping', {
+        headers: {
+        'Accept': 'application/json; charset=utf-8',
+        'Authorization': `Token ${token}`,
+        }})
+
+    const mappingIdsData = await getMappingIds.json();
+    importMappingId = mappingIdsData[1].Id;
 })
   
 test.describe("Intect import module",()=>{
@@ -23,7 +34,7 @@ test.describe("Intect import module",()=>{
             data: {
                 "AccountId": null,
                 "FileBase64": `${fileDataBase64}`,
-                "MappingId": 9684, // This value changes on deployment of a new Intect app version.
+                "MappingId": `${importMappingId}`, // This value changes on deployment of a new Intect app version.
                 "Options": [
                     {
                         "Key": "save",
@@ -41,10 +52,11 @@ test.describe("Intect import module",()=>{
         
         expect(importResponse.ok()).toBeTruthy();
         const importResJSON = await importResponse.json();
-        expect(importResJSON['Errors'].length).toBe(0)
 
         console.log('Errors: ', importResJSON['Errors']);
         console.log('Errors lentgh: ', importResJSON['Errors'].length);
+
+        expect(importResJSON['Errors'].length).toBe(0)
     })
 
     test('Import Excel file via API with errors', async ({request}) => {   
@@ -59,7 +71,7 @@ test.describe("Intect import module",()=>{
             {
                 "AccountId": null,
                 "FileBase64": `${fileDataBase64}`,
-                "MappingId": 9684,
+                "MappingId": `${importMappingId}`,
                 "Options": [
                     {
                         "Key": "save",
@@ -72,12 +84,15 @@ test.describe("Intect import module",()=>{
                 ]
             }
         })
-        const importResJSON = await importResponse.json();
-  
-        expect(importResponse.ok()).toBeTruthy();
-        expect(importResJSON['Errors'.length]).not.toBe(0)
+
+        console.log(importResponse);
         
+        expect(importResponse.ok()).toBeTruthy();
+        const importResJSON = await importResponse.json();
+
         console.log('Errors: ', importResJSON['Errors']);
         console.log('Errors lentgh: ', importResJSON['Errors'].length);
+        
+        expect(importResJSON['Errors'].length).not.toBe(0)
     })
 })
