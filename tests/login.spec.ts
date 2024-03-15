@@ -2,8 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Intect login module", () => {
   test("Login with valid credentials", async ({ request }) => {
-    const loginResponse = await request.post(
-      "https://api.testintect.app//api/auth/login",
+    const loginResponse = await request.post(`https://${process.env.INTECT_ENVIRONMENT}.testintect.app//api/auth/login`,
       {
         headers: {
           "User-Agent":
@@ -23,7 +22,7 @@ test.describe("Intect login module", () => {
 
   test("Login with invalid credentials", async ({ request }) => {
     const loginResponse = await request.post(
-      "https://api.testintect.app//api/auth/login",
+      `https://${process.env.INTECT_ENVIRONMENT}.testintect.app//api/auth/login`,
       {
         headers: {
           "User-Agent":

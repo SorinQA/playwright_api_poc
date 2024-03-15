@@ -6,7 +6,7 @@ let apiContext;
 
 test.beforeAll(async ({ playwright }) => {
   apiContext = await playwright.request.newContext({
-    baseURL: "https://api.testintect.app/",
+    baseURL: `https://${process.env.INTECT_ENVIRONMENT}.testintect.app/`,
     extraHTTPHeaders: {
       "Content-type": "application/json",
     },
