@@ -4,8 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "alltests": "cross-env ENV=api npx playwright test",
-    "expense": "cross-env ENV=closure3api npx playwright test e2eExpense.spec.ts",
+    "alltests": "cross-env INTECT_ENVIRONMENT=api npx playwright test",
+    "expense": "cross-env INTECT_ENVIRONMENT=closure3api npx playwright test e2eExpense.spec.ts",
+    "import": "cross-env INTECT_ENVIRONMENT=api npx playwright test import.spec.ts",
+    "signupimport": "cross-env INTECT_ENVIRONMENT=api npx playwright test e2eSignupImport.spec.ts",
     "employeecreate": "npx playwright test createEmployee.spec.ts",
     "report": "npx playwright show-report"
   },
