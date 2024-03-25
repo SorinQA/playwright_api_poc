@@ -18,9 +18,6 @@ let feature;
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 test.beforeAll(async ({ playwright }) => {
-  feature = await fs.readFile("1_login.feature", () => {});
-  console.log(feature.toString());
-
   apiContext = await playwright.request.newContext({
     // baseURL: `https://${process.env.INTECT_ENVIRONMENT}.testintect.app/`,
     baseURL: `https://closure3api.testintect.app/`,
